@@ -1,0 +1,12 @@
+inc/eMELA/version.h
+bin/eMELA-config
+build/
+*~
+*.o
+*.exe
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+example/example

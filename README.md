@@ -62,7 +62,7 @@ void QuickInitialize(std::string const& pert_order = "NLL",
                      std::string const& ren_scheme = "MSBAR",   
                      double const& alpha_mz = 1.0/127.95471413988483012);
 ```
-where:
+where the four entries are, respectively:
 - Perturbative order of the evolution: `NLL`, `LL`
 - Factorisation scheme: `DELTA` , `MSBAR`
 - Renormalisation scheme: `MSBAR`, `ALPMZ`, `ALGMU`
@@ -75,7 +75,7 @@ For instance, one could write:
 QuickInitialize("NLL", "MSBAR", "ALPMZ", 1.0/128.940);
 ```
 
-If one needs to modify other options, several setters function `SetXXX(...)` are provided, see the inline comments next to each function in the header file. Note that in this case, one should first call the function `SetDefaultParameters()`, modify what needed and at the end call the `InitializeEvolution()` function e.g.:
+If one needs to modify other options, several setters function `SetXXX(...)` are provided, see the inline comments next to each function in the header file. Note that in this case, one should first call the function `SetDefaultParameters()`, modify what is needed and at the end call the `InitializeEvolution()` function e.g.:
 ```C++
 SetDefaultParameters();
 SetXXX(...);
@@ -91,7 +91,7 @@ void InitializeFromGrid(int const& lhaid);
 ```
 In the first call, the name of the PDF should be provided; `eMELA` will look for a folder `pdfname` among the paths contained in the `LHAPDF_DATA_PATH` environment variable (see above). In the second call, the index of the PDF as declared in the `eMELA/install/grids/pdfsets.index` file should be provided; again, the `eMELA/install/grids` path has to be in the  `LHAPDF_DATA_PATH` variable. By loading the grid, all the parameters which have been used to build the PDF (which are stored in the info file of the PDF) are also loaded in `eMELA`.
 
-### Get the electron PDFs
+### Get the PDFs of the electron
 
 At this point, one can get the electron PDFs multiplied by a damping factor $(1-z)^{1-\gamma}$ (see below) by means of the function:
 ```C++
@@ -116,7 +116,7 @@ and the function
 ```C++
 double AsyPdf(const double & omx, const double & Q, const double & gamma = 1.0);
 ```
-are provided, respectively.
+are provided, respectively. Note that for $1-x < 10^{-8}$ the numerical solution is not expected to be reliable.
 
 The arguments are:
 - `idx`: PDG index of the parton (e.g. 11 = electron, 22 = photon, -11 = positron, 1 = d quark, etc.)
@@ -125,7 +125,7 @@ The arguments are:
 - `Q`: factorisation scale
 - `gamma`: the PDF returned is multiplied by $(1-z)^{1-\gamma}$.
 
-Of course, the positron PDFs are simply given by charge conjugation e.g. the PDF of the positron from the positron beam is equal to the PDF of the electron from the electron beam etc.
+Of course, the positron PDFs are simply given by charge conjugation e.g. the PDF of the positron from the positron particle is equal to the PDF of the electron from the electron particle, etc.
 
 ### Write your own grid
 
@@ -154,7 +154,7 @@ All the parameters not related to the evolution of alpha will be ignored when ca
 
 ### Beamstrahlung
 
-`eMELA` provides also PDFs with beamstrahlung effects, according to the procedure presented in [arXiv:2108.10261](https://arxiv.org/pdf/2108.10261.pdf). (All the equations refer to this paper.) Beamstrahlung effects are collider dependent, hence for any collider, one should implement a new class, derived from the `bspdf` class. As an example, the class `ilc500` is provided in the `eMELA` source code, and grids including beamstrahlung effects are included in the `eMELA/install/grids` folder.
+`eMELA` can also provide one with PDFs with beamstrahlung effects, according to the procedure presented in sects. 4 and 5 of [arXiv:2108.10261](https://arxiv.org/pdf/2108.10261.pdf). (All the equations refer to this paper.) Beamstrahlung effects are collider dependent, hence for any collider, one should implement a new class, derived from the `bspdf` class. As an example, the class `ilc500` is provided in the `eMELA` source code, and grids including beamstrahlung effects are included in the `eMELA/install/grids` folder.
 
 Suppose to be interested in using the `NLL_DELTA_MSBAR_ILC500` grid. In order to use beamstrahlung, one needs to include the following headers:
 ```C++
@@ -167,13 +167,13 @@ Then, one should build a pointer to the `bspdf` object via:
 ```C++
 auto ptr_bs = make_bspdf("NLL_DELTA_MSBAR_ILC500");
 ```
-Finally, a single component can be accessed with:
+Finally, a single component (index $n$ in eq.(44)) can be accessed with:
 ```C++
-double fcom = ptr_bs->get_pdf(icom, pid, bid, x, omx, Q, gamma);
+double fcom = ptr_bs->get_pdf(icom, idx, bid, x, omx, Q, gamma);
 ```
 where:
 - `icom`: index of the component
-- `pid`: PDG code of the particle
+- `idx`: PDG code of the particle
 - `bid`: identifier of the beam (1 = electron, -1 = positron)
 - `x` and `omx`: $x$ and $1-x$ respectively
 - `Q`: factorisation scale
@@ -181,16 +181,16 @@ where:
 
 ### Implementing new beamstrahlung type
 
-In practice, other beamstrahlung type may be adopted, and here we document the necessary steps to implement it. 
+In practice, other beamstrahlung types may be adopted, and here we document the necessary steps to implement them.
 
-The first step, clearly, is to prepare the beamstrahlung functions that want to be adopted. Note that such function should be written in a factorisable form, as Eq.(27). In the following we suppose that the function form is similar to Eq. (28), where all those f_01,f_10,f_00+,f_00- functions esstential the same f function with different parameters, as in Eq. (31-34). Other forms of the beamstrahlung functions can be adopted, but require more modification. (For more detail about that, please contact one of the author, see contacts below).
+The first step is to prepare the beamstrahlung functions that one wants to employ. Note that such a function should be written in a factorisable form, see e.g. eq.(27). In the following we suppose that the functional form is similar to eq. (28), where the functions f_01, f_10, f_00+, f_00- coincide analytically, but differ in the choices of the parameters that enter them, as is exemplified in eqs. (31)-(34). Other forms of the beamstrahlung functions can be adopted, but require more modifications. (For more detail about that, please contact one of the author, see contacts below).
 
-To implement a new beamstrahlung, a new class derived from the `bspdf` base class should be implemented. The `ilc500` class can be recognized as an example. Suppose the new class is called `newbs`, below we list several changes that should be made:
-1. This function computes the coevolution between ISR and beamstrahlung functions:
+To implement a new beamstrahlung function, a new class derived from the `bspdf` base class should be defined. The `ilc500` class is used here as an example. Suppose the new class is called `newbs`, below we list several changes that should be made:
+1. This function computes the convolution between the ISR and beamstrahlung functions (as in eq.(38)):
  ```C++
 void newbs::integrate_isr(int pid, double p, double q, double x, double omx, double Q, double beta);
 ```
-Such coevolution is done via numerical integration. For numerical accuracy and performance, the domain of integration is separated into two intervals, and for each of them a variable transformation is performed to achieve a flatter integrand. The corresponding integrand are defined as `term1` and `term2` in the `ilc500` code. In particular, the line starting with `double g = ` is the computation of the single f function, and it should be changed into the new f function accordingly.
+Such convolution is done via numerical integration. For numerical accuracy and performance, the domain of integration is separated into two intervals, and for each of them a variable transformation is performed to achieve a flatter integrand. The corresponding integrand are defined as `term1` and `term2` in the `ilc500` code. In particular, the line starting with `double g = ` is the computation of the single f function, and it should be changed into the new f function accordingly.
 
 2. in the header file, corresponding values for parameters should be set accordingly.
 
@@ -217,7 +217,7 @@ export LD_LIBRARY_PATH=/eMELA/install/lib:$LD_LIBRARY_PATH
 ```
 
 To use grids, one would need to:
-- pass the LHAPDF compilear and linker flags (this can be done with the options `--cflags` and `--libs` of the script `lhapdf-config`);
+- pass the LHAPDF compiler and linker flags (this can be done with the options `--cflags` and `--libs` of the script `lhapdf-config`);
 - update the `LD_LIBRARY_PATH` with the path where the LHAPDF library is installed;
 - modify the `LHAPDF` environment variable `LHAPDF_DATA_PATH` to include the path to the grids e.g. if one wishes to use the default grids shipped with `eMELA` (installed in `eMELA/install/grids`), hence one would need to execute
 ```Shell

@@ -9,4 +9,6 @@ build/
 *.fdb_latexmk
 *.fls
 *.log
-example/example
+example/CreateGrid
+example/GetPdf
+example/GetPdfGrid

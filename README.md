@@ -43,7 +43,7 @@ Pre-computed grids with different choices of renormalisation and factorisation s
 
 ## Examples
 
-In case of successful installation, some test codes will be generated in the ``examples/`` folder.
+In case of successful installation, some test codes will be generated in the ``example/`` folder.
 
 ## Usage
 

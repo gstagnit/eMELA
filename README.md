@@ -39,7 +39,7 @@ More configuration options (static vs. dynamic library, path to LHAPDF installat
 cd build
 ccmake ..
 ```
-Pre-computed grids with different choices of renormalisation and factorisation schemes will be installed in the  ``/eMELA/install/grids/`` folder.
+Pre-computed grids with different choices of renormalisation and factorisation schemes can be downloaded as a compressed tar.gz archive under "Release". They need to be copied in the main directory under `grids` in order to be copied in the installation directory with `make install`.
 
 ## Examples
 
@@ -231,7 +231,7 @@ Please cite the following references when using ``eMELA`` in scientific works:
 - S. Frixione, *Initial conditions for electron and photon structure and fragmentation functions*, [arXiv:1909.03886](https://arxiv.org/abs/1909.03886)
 - V. Bertone, M. Cacciari, S. Frixione, G. Stagnitto, *The partonic structure of the electron at the next-to-leading logarithmic accuracy in QED*, [arXiv:1911.12040](https://arxiv.org/abs/1911.12040)
 - S. Frixione, *On factorisation schemes for the electron parton distribution functions in QED*, [arXiv:2105.06688](https://arxiv.org/abs/2105.06688)
-- V. Bertone, M. Cacciari, S. Frixione, G. Stagnitto, X. Zhao, M. Zaro, *Improving methods and predictions at high-energy e+e- colliders within collinear factorisation*, [arXiv:2206.XXXX](https://arxiv.org/abs/2105.XXX)
+- V. Bertone, M. Cacciari, S. Frixione, G. Stagnitto, X. Zhao, M. Zaro, *Improving methods and predictions at high-energy e+e- colliders within collinear factorisation*, [arXiv:2207.03265](https://arxiv.org/abs/2207.03265)
 
 ## Contacts
 

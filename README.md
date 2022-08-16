@@ -39,7 +39,7 @@ More configuration options (static vs. dynamic library, path to LHAPDF installat
 cd build
 ccmake ..
 ```
-Pre-computed grids with different choices of renormalisation and factorisation schemes can be downloaded as a compressed tar.gz archive under "Release". They need to be copied in the main directory under `grids` in order to be copied in the installation directory with `make install`.
+Pre-computed grids with different choices of renormalisation and factorisation schemes can be downloaded as a compressed tar.gz archive under [Releases](https://github.com/gstagnit/eMELA/releases). They need to be copied in the main directory under `grids` in order to be copied in the installation directory with `make install`.
 
 ## Examples
 

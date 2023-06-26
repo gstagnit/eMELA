@@ -47,7 +47,10 @@ add_subdirectory(example)
 # LHAPDF optional
 option(WITH_LHAPDF "Use LHAPDF" OFF)
 
+
 if(WITH_LHAPDF)
+  find_package(BOOST REQUIRED)
+
   message("-- LHAPDF enabled")
   add_definitions(-DUSE_LHAPDF)
   find_program(LHAPDF_CONFIG lhapdf-config REQUIRED)
@@ -63,17 +66,10 @@ if(WITH_LHAPDF)
      )
      set(LHAPDF_LIBRARIES ${LHAPDF_LIBRARIES} CACHE STRING INTERNAL)
   endif(LHAPDF_CONFIG)
-endif(WITH_LHAPDF)
-
-if(WITH_LHAPDF)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LHAPDF_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wpedantic -fPIC")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LHAPDF_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wpedantic -fPIC")
 else()
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wpedantic -fPIC")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wpedantic -fPIC")
 endif()
-
-# build target library
-# add_subdirectory(src)
-# add_subdirectory(run)
 
 option(SHARED "Build shared-libray instead of static-libray" ON)
 if(SHARED)

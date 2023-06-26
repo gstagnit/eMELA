@@ -49,7 +49,7 @@ option(WITH_LHAPDF "Use LHAPDF" OFF)
 
 
 if(WITH_LHAPDF)
-  find_package(BOOST REQUIRED)
+  find_package(Boost REQUIRED)
 
   message("-- LHAPDF enabled")
   add_definitions(-DUSE_LHAPDF)

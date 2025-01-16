@@ -1,5 +1,5 @@
 # define minimum version of cmake
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required(VERSION 3.12...3.31)
 
 # define project name and its language
 project(eMELA CXX Fortran)
@@ -55,14 +55,14 @@ if(WITH_LHAPDF)
   add_definitions(-DUSE_LHAPDF)
   find_program(LHAPDF_CONFIG lhapdf-config REQUIRED)
   if (LHAPDF_CONFIG)
-     exec_program(${LHAPDF_CONFIG}
-     ARGS --cflags
+     execute_process(COMMAND ${LHAPDF_CONFIG} --cflags
      OUTPUT_VARIABLE LHAPDF_CXX_FLAGS
+     OUTPUT_STRIP_TRAILING_WHITESPACE
      )
      set(LHAPDF_CXX_FLAGS ${LHAPDF_CXX_FLAGS} CACHE STRING INTERNAL)
-     exec_program(${LHAPDF_CONFIG}
-     ARGS --libs
+     execute_process(COMMAND ${LHAPDF_CONFIG} --libs
      OUTPUT_VARIABLE LHAPDF_LIBRARIES
+     OUTPUT_STRIP_TRAILING_WHITESPACE
      )
      set(LHAPDF_LIBRARIES ${LHAPDF_LIBRARIES} CACHE STRING INTERNAL)
   endif(LHAPDF_CONFIG)
@@ -82,7 +82,11 @@ if(WITH_LHAPDF)
   target_include_directories(eMELA PUBLIC ${Boost_INCLUDE_DIRS})
 endif()
 
-target_link_libraries(eMELA ${LHAPDF_LIBRARIES} ${MELA_LIBRARIES})
+if(DEFINED MELA_LIBRARIES)
+  target_link_libraries(eMELA ${LHAPDF_LIBRARIES} ${MELA_LIBRARIES})
+else()
+  target_link_libraries(eMELA ${LHAPDF_LIBRARIES})
+endif()
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/inc/eMELA DESTINATION include)
 install(TARGETS eMELA DESTINATION lib)
 

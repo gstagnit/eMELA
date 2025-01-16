@@ -24,6 +24,8 @@ In order to install the code, [CMake](https://cmake.org/) is required (usually a
 
 ## Installation
 
+### From source
+
 The code can be compiled using the following procedure:
 ```Shell
 mkdir build
@@ -40,6 +42,25 @@ cd build
 ccmake ..
 ```
 Pre-computed grids with different choices of renormalisation and factorisation schemes can be downloaded as a compressed tar.gz archive under [Releases](https://github.com/gstagnit/eMELA/releases). They need to be copied in the main directory under `grids` in order to be copied in the installation directory with `make install`.
+
+### From conda-forge
+
+eMELA is packaged and distributed on [conda-forge](https://github.com/conda-forge/emela-feedstock/) for the following platforms:
+
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/emela.svg)](https://anaconda.org/conda-forge/emela)
+[![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/emela.svg)](https://anaconda.org/conda-forge/emela)
+
+To install and add `emela` to a project with [`pixi`](https://pixi.sh/), from the project directory run
+
+```
+pixi add emela
+```
+
+and to install into a particular conda environment with [`conda`](https://docs.conda.io/projects/conda/), in the activated environment run
+
+```
+conda install --channel conda-forge emela
+```
 
 ## Examples
 

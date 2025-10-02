@@ -15,7 +15,7 @@ if (NOT DEFINED CMAKE_MACOSX_RPATH)
 endif()
 
 # set version
-set(eMELA_VERSION 1.0)
+set(eMELA_VERSION 1.0.1)
 
 # export version to file
 configure_file(
